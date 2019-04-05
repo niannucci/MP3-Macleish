@@ -12,5 +12,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(macleish)
+library(leaflet)
 
+macleish_trails <- macleish_layers %>%
+  pluck("trails")
+
+trails_leaflet <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_trails)
+
+trails_leaflet
 ```
