@@ -1,7 +1,9 @@
 ---
 title: "Mini Project 3"
 author: Natalia Iannucci and Hana Hirano
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -9,17 +11,38 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 library(macleish)
 library(leaflet)
+library(sf)
 
 macleish_trails <- macleish_layers %>%
   pluck("trails")
 
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = macleish_trails)
-
+  addPolylines(data = macleish_trails, color = ~pal(macleish_trails$name)) 
+  
 trails_leaflet
+```
+
+```{r}
+elevation <- macleish_layers %>%
+  pluck("contours_3m") %>%
+  st_transform(4326)
+```
+
+```{r message=FALSE}
+elevation_trails <- macleish_trails %>%
+  st_intersection(elevation)
+```
+
+```{r}
+elevation_map <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_trails) %>%
+  addPolygons(data = elevation)
+
+elevation_map
 ```
