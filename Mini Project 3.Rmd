@@ -19,7 +19,6 @@ library(sf)
 
 macleish_trails <- macleish_layers %>%
   pluck("trails")
-
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_trails, color = ~pal(macleish_trails$name)) 
@@ -35,14 +34,27 @@ elevation <- macleish_layers %>%
 
 ```{r message=FALSE}
 elevation_trails <- macleish_trails %>%
-  st_intersection(elevation)
+  st_intersection(elevation) 
 ```
 
 ```{r}
 elevation_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_trails) %>%
-  addPolygons(data = elevation)
+  addPolygons(data = elevation, col = "red")
 
 elevation_map
 ```
+
+```{r}
+grouped <- elevation_trails %>%
+  filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) %>%
+  group_by(name) %>%
+  summarize(elevation_ft = sum(ELEV_FT), distance = sum(SHAPE_LEN))
+```
+
+```{r}
+a  <- elevation_trails %>%
+  filter(name == "Western Loop")
+```
+
