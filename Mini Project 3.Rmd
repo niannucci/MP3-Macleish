@@ -35,10 +35,8 @@ elevation <- macleish_layers %>%
 
 ```{r message=FALSE}
 elevation_trails <- macleish_trails %>%
-  st_intersection(elevation)
-```
+  st_within(elevation)
 
-```{r}
 elevation_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_trails) %>%
