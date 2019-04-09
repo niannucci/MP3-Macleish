@@ -33,8 +33,11 @@ elevation <- macleish_layers %>%
 ```
 
 ```{r message=FALSE}
-elevation_trails <- macleish_trails %>%
-  st_intersection(elevation) 
+elevation_trails <- st_intersection(
+  macleish_trails,
+  elevation
+) 
+
 ```
 
 ```{r}
@@ -51,6 +54,10 @@ grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) %>%
   group_by(name) %>%
   summarize(elevation_ft = sum(ELEV_FT), distance = sum(SHAPE_LEN))
+
+grouped <- grouped %>% 
+  mutate("Distance_miles" = distance / 5280) %>%
+  mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
 ```
 
 ```{r}
@@ -58,7 +65,7 @@ a  <- elevation_trails %>%
   filter(name == "Western Loop")
 ```
 
-Elevation Gain(in feet) x 2 x distance (in miles)
+SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
 - less than 50 : Easiest (1.5 miles per hour)
 - 50 ~ 100 : Moderate (1.4 miles per hour)
 - 100 ~ 150 : Moderately Strenuous (1.3 mph)
