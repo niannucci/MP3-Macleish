@@ -1,6 +1,6 @@
 ---
-title: "Mini Project 3"
-author: Natalia Iannucci and Hana Hirano
+title: "Take a Hike on the Perfect Trail for You!"
+author: Natalia Iannucci, Hana Hirano, and Syrine Matoussi
 output: 
   html_document:
     code_folding: hide
@@ -26,7 +26,7 @@ trails_leaflet <- leaflet() %>%
 trails_leaflet
 ```
 
-```{r}
+```{r message=FALSE}
 elevation <- macleish_layers %>%
   pluck("contours_3m") %>%
   st_transform(4326)
@@ -40,7 +40,7 @@ elevation_trails <- st_intersection(
 
 ```
 
-```{r}
+```{r message=FALSE}
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) %>%
   group_by(name) %>%
@@ -61,7 +61,7 @@ difficulty_map <- leaflet() %>%
 difficulty_map
 ```
 
-```{r}
+```{r message=FALSE}
 a  <- elevation_trails %>%
   filter(name == "Western Loop")
 ```
@@ -73,3 +73,8 @@ SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
 - 100 ~ 150 : Moderately Strenuous (1.3 mph)
 - 150 ~ 200 : Strenuous (1.2 mph)
 - 200 ~ : Very Strenuous (1.2 mph)
+
+
+Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
+
+> Word count: `r wordcountaddin::word_count()`
