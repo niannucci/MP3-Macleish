@@ -17,12 +17,20 @@ library(macleish)
 library(leaflet)
 library(sf)
 
+boundary <- macleish_layers %>% 
+  pluck("boundary")
 macleish_trails <- macleish_layers %>%
   pluck("trails")
+
+interior_trails <- st_intersection(
+  boundary, 
+  macleish_trails
+)
+
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = macleish_trails)#, color = ~pal(macleish_trails$name)) 
-  
+  addPolylines(data = interior_trails) 
+
 trails_leaflet
 ```
 
@@ -34,7 +42,7 @@ elevation <- macleish_layers %>%
 
 ```{r message=FALSE}
 elevation_trails <- st_intersection(
-  macleish_trails,
+  interior_trails,
   elevation
 ) 
 
@@ -52,18 +60,30 @@ grouped <- grouped %>%
 ```
 
 ```{r message=FALSE}
-pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "White", "Purple"), 1:6)
+pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink", "Purple"), 1:6)
+
+#Ideal -> (Yellow = entry trail)
+#Red = Western Loop (+ entry trail, and the tiny one on the top, and part of the straight-ish poplar hill road)(right now)
+#Blue = Porcupine Trail (+ the bottom part of Western Loop, and snowmobile trail on the bottom right)
+#Black = Vernal Pool Loop
+#Pink = Eastern Loop = Homestead Trail? = 5
+#Purple = Easy Out (where is it, I don't know which one is Easy Out..., so it's not illustrated)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = macleish_trails, color = ~pal(c(1, 4, 6, 2, 3, 5)))
+  addPolylines(data = interior_trails, color = ~pal(c(3, 2, 5, 1, 5, 2)))
 
 difficulty_map
 ```
 
 ```{r message=FALSE}
 a  <- elevation_trails %>%
-  filter(name == "Western Loop")
+  filter(name == "Western Loop") %>%
+  filter(ELEV_FT == "797")
+
+leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = a)
 ```
 
 
