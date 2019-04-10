@@ -60,11 +60,6 @@ grouped <- grouped %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
 ```
 
-```{r}
-a  <- elevation_trails %>%
-  filter(name == "Western Loop")
-```
-
 SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
 - less than 50 : Easiest (1.5 miles per hour)
 - 50 ~ 100 : Moderate (1.4 miles per hour)
