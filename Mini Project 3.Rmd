@@ -52,7 +52,7 @@ grouped <- grouped %>%
 ```
 
 ```{r message=FALSE}
-pal <- colorNumeric(c("Red", "Red", "Red", "Green", "Yellow", "Yellow"))
+pal <- colorNumeric(c("Red", "Red", "Red", "Green", "Yellow", "Yellow"), 1:6)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
