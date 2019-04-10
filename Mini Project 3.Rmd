@@ -21,7 +21,7 @@ macleish_trails <- macleish_layers %>%
   pluck("trails")
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = macleish_trails, color = ~pal(macleish_trails$name)) 
+  addPolylines(data = macleish_trails)#, color = ~pal(macleish_trails$name)) 
   
 trails_leaflet
 ```
@@ -41,15 +41,6 @@ elevation_trails <- st_intersection(
 ```
 
 ```{r}
-elevation_map <- leaflet() %>%
-  addTiles() %>%
-  addPolylines(data = macleish_trails) %>%
-  addPolygons(data = elevation, col = "red")
-
-elevation_map
-```
-
-```{r}
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) %>%
   group_by(name) %>%
@@ -58,6 +49,16 @@ grouped <- elevation_trails %>%
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
+```
+
+```{r message=FALSE}
+pal <- colorNumeric(c("Red", "Red", "Red", "Green", "Yellow", "Yellow"))
+
+difficulty_map <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_trails, color = ~pal(c(1, 4, 6, 2, 3, 5)))
+
+difficulty_map
 ```
 
 ```{r}
