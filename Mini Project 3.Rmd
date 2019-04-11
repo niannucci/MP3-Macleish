@@ -16,6 +16,8 @@ library(tidyverse)
 library(macleish)
 library(leaflet)
 library(sf)
+library(ggthemes)
+library(ggrepel)
 
 boundary <- macleish_layers %>% 
   pluck("boundary")
@@ -84,6 +86,20 @@ a  <- elevation_trails %>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = a)
+```
+
+```{r message=FALSE}
+elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
+  geom_point(size = 5) +
+  theme_solarized() +
+  geom_smooth(color = "black", fill = "blue") +
+  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
+  xlab("Distance of Trail (in miles)") +
+  ylab("Total change in elevation (in feet)") 
+```
+
+```{r message=FALSE}  
+elevation_graph
 ```
 
 
