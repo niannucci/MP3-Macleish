@@ -79,7 +79,7 @@ grouped <- grouped %>%
   mutate("Difficulty" = sqrt(elev_change * 2 * Distance_miles)) %>%
   select(name, elev_change, Distance_miles,Difficulty)
 
-grouped$difficulty_level<-c("very streneous","moderate","very streneous","moderate","very streneous")
+grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
 ```{r message=FALSE}
@@ -105,18 +105,18 @@ difficulty_map
 ```
 
 
+
 ```{r message=FALSE}
-elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
-  geom_point(size = 5) +
+
+elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
-  geom_smooth(color = "black", fill = "blue") +
+  geom_smooth(method = 'loess') +
+  stat_smooth(se=FALSE, geom="area", method = 'loess', alpha=.5, fill = "Purple") +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
+  geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
-  ylab("Total change in elevation (in feet)") 
-
-ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
-
-#present elevation in miles
+  ylab("Total change in elevation (in feet)") +
+  labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )
 ```
 
 ```{r message=FALSE}  
