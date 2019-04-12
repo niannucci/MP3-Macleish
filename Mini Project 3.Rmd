@@ -58,6 +58,8 @@ elevation_trails <- st_intersection(
 #Porcupine --> 267 - 237 = 30 m
 #Vernal --> 237 - 231 = 6 m
 #Western --> 273 - 231 = 42 m 
+
+# we need to manually enter those correct data regarding elevation changes to the data
 ```
 
 ```{r message=FALSE}
@@ -106,8 +108,7 @@ leaflet() %>%
 
 
 b <- elevation_trails %>%
-  group_by(ELEV_FT) %>%
-  summarize(name, SHAPE_LEN, geometry)
+  select(name, ELEV_M)
 
 
 ```
