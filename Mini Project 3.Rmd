@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 library(tidyverse)
 library(macleish)
 library(leaflet)
@@ -20,7 +20,7 @@ library(ggthemes)
 library(ggrepel)
 ```
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 trail_stream_xings <- macleish_layers %>%
   pluck("trails") %>%
   st_intersection(pluck(macleish_layers, "streams"))
@@ -43,13 +43,13 @@ trails_leaflet <- leaflet() %>%
 trails_leaflet
 ```
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 elevation <- macleish_layers %>%
   pluck("contours_3m") %>%
   st_transform(4326)
 ```
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 elevation_trails <- st_intersection(
   interior_trails,
   elevation 
@@ -61,7 +61,7 @@ elevation_trails
 
 We have computed the elevation change and the distance for each trail, yet in order for the visitors to understand the difficulty of each trail more easily, we have decided to categorize those 5 trails into 3 difficulty levles: easy, moderate, and strenuous. Our initial plan was to use already existing [hiking trail difficulty rating system] (https://www.nps.gov/shen/planyourvisit/how-to-determine-hiking-difficulty.htm). However, after figuring out that all of the Macleish trails would be categorized as the easiest by Shenandoah's rating system, we kept using the equation to numerize the difficulty but arranged the way we categorize them. Instead of dividing them into easy, moderate, moderately strenuous, strenuous, and very strenuous according to the given difficulty rating, our method is dividing trails into 3 relative to each other. For instance, the difficulties of entry trail and Vernal Pool Loop are below 10, while other 3 trails are over 25, thus, they are easy trails. On the other hand, Western Loop has a high difficulty of over 45, therefore, it is a strenuous trail. 
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name) %>%
@@ -78,7 +78,7 @@ grouped <- grouped %>%
 grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 name_pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
 
 hiking_trails <- macleish_trails %>% 
@@ -93,16 +93,18 @@ name_map <- leaflet() %>%
 name_map
 ```
 
-```{r message = FALSE}
-diff_pal <- colorFactor(palette = topo.colors(2), domain = grouped$difficulty_level)
+```{r message = FALSE, warning=FALSE}
+diff_pal <- colorFactor(palette = topo.colors(3), domain = grouped$difficulty_level)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = grouped, color = ~diff_pal(difficulty_level)) %>%
-  addMarkers(data = st_cast(hiking_trails, "POINT"), popup = ~name)
+  addMarkers(data = st_cast(grouped, "POINT"), popup = ~difficulty_level)
+
+difficulty_map
 ```
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
@@ -114,7 +116,7 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
 ```
 
-```{r message = FALSE}  
+```{r message = FALSE, warning=FALSE}  
 elevation_graph
 ```
 
