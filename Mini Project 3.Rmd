@@ -55,14 +55,6 @@ elevation_trails <- st_intersection(
   select(name, SHAPE_LEN, geometry)
 
 elevation_trails
-
-#Eastern --> 273 - 249 = 24 m = 78.740  
-#entry trail --> 252 - 246 = 6 m = 19.685 ft
-#Porcupine --> 267 - 237 = 30 m = 98.425
-#Vernal --> 237 - 231 = 6 m = 19.685 ft
-#Western --> 273 - 231 = 42 m = 137.795
-
-# we need to manually enter those correct data regarding elevation changes to the data
 ```
 
 ```{r message=FALSE}
@@ -98,19 +90,15 @@ name_map
 ```
 
 ```{r message=FALSE}
-
 diff_pal <- colorFactor(palette = topo.colors(2), domain = grouped$difficulty_level)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = grouped, color = ~diff_pal(difficulty_level)) %>%
-  addMarkers(data = st_cast(grouped, "POINT"), popup = ~name)
-
-
+  addMarkers(data = st_cast(hiking_trails, "POINT"), popup = ~name)
 ```
 
 ```{r message=FALSE}
-
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
@@ -119,7 +107,7 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
-  labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )
+  labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
 ```
 
 ```{r message=FALSE}  
@@ -128,11 +116,6 @@ elevation_graph
 
 
 SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
-- less than 50 : Easiest (1.5 miles per hour)
-- 50 ~ 100 : Moderate (1.4 miles per hour)
-- 100 ~ 150 : Moderately Strenuous (1.3 mph)
-- 150 ~ 200 : Strenuous (1.2 mph)
-- 200 ~ : Very Strenuous (1.2 mph)
 
 
 Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
