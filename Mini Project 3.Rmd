@@ -52,6 +52,12 @@ elevation_trails <- st_intersection(
   interior_trails,
   elevation
 ) 
+
+#Eastern --> 273 - 249 = 24 m
+#entry trail --> 252 - 246 = 6 m
+#Porcupine --> 267 - 237 = 30 m
+#Vernal --> 237 - 231 = 6 m
+#Western --> 273 - 231 = 42 m 
 ```
 
 ```{r message=FALSE}
@@ -63,6 +69,8 @@ grouped <- elevation_trails %>%
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
+
+grouped$difficulty_level<-c("very streneous", "easiest","moderate","very streneous","moderate","very streneous")
 
 ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
@@ -94,6 +102,14 @@ a  <- elevation_trails %>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = a)
+
+
+
+b <- elevation_trails %>%
+  group_by(ELEV_FT) %>%
+  summarize(name, SHAPE_LEN, geometry)
+
+
 ```
 
 ```{r message=FALSE}
@@ -104,6 +120,8 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") 
+
+#present elevation in miles
 ```
 
 ```{r message=FALSE}  
