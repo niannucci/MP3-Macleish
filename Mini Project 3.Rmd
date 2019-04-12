@@ -6,19 +6,21 @@ output:
     code_folding: hide
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r message=FALSE}
+```{r message = FALSE}
 library(tidyverse)
 library(macleish)
 library(leaflet)
 library(sf)
 library(ggthemes)
 library(ggrepel)
+```
 
+```{r message = FALSE}
 trail_stream_xings <- macleish_layers %>%
   pluck("trails") %>%
   st_intersection(pluck(macleish_layers, "streams"))
@@ -41,13 +43,13 @@ trails_leaflet <- leaflet() %>%
 trails_leaflet
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 elevation <- macleish_layers %>%
   pluck("contours_3m") %>%
   st_transform(4326)
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 elevation_trails <- st_intersection(
   interior_trails,
   elevation 
@@ -57,7 +59,7 @@ elevation_trails <- st_intersection(
 elevation_trails
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name) %>%
@@ -74,7 +76,7 @@ grouped <- grouped %>%
 grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 name_pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
 
 hiking_trails <- macleish_trails %>% 
@@ -89,7 +91,7 @@ name_map <- leaflet() %>%
 name_map
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 diff_pal <- colorFactor(palette = topo.colors(2), domain = grouped$difficulty_level)
 
 difficulty_map <- leaflet() %>%
@@ -98,7 +100,7 @@ difficulty_map <- leaflet() %>%
   addMarkers(data = st_cast(hiking_trails, "POINT"), popup = ~name)
 ```
 
-```{r message=FALSE}
+```{r message = FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
@@ -107,15 +109,10 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
-<<<<<<< HEAD
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
 ```
 
-```{r message=FALSE}  
-=======
-  labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )
- 
->>>>>>> 5f6b392f5c7f69aca592695a24ec5f3a46c3adae
+```{r message = FALSE}  
 elevation_graph
 ```
 
