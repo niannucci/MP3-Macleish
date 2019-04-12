@@ -79,7 +79,7 @@ grouped <- grouped %>%
   mutate("Difficulty" = sqrt(elev_change * 2 * Distance_miles)) %>%
   select(name, elev_change, Distance_miles,Difficulty)
 
-grouped$difficulty_level<-c("very streneous","moderate","very streneous","moderate","very streneous")
+grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
 ```{r message=FALSE}
