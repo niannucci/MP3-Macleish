@@ -83,7 +83,7 @@ grouped$difficulty_level<-c("very streneous","moderate","very streneous","modera
 ```
 
 ```{r message=FALSE}
-pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink"), 1:5)
+pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
 
 #Ideal -> (Yellow = entry trail)
 #Red = Western Loop (+ entry trail, and the tiny one on the top, and part of the straight-ish poplar hill road)(right now)
@@ -96,7 +96,7 @@ hiking_trails<- macleish_trails %>%
   group_by(name)
 difficulty_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = hiking_trails, color = ~pal(c(2, 3, 2, 2, 2)))%>%
+  addPolylines(data = hiking_trails, color = ~pal(name))%>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
 
 #second one in pal is Western & entry trail
@@ -104,19 +104,6 @@ difficulty_map <- leaflet() %>%
 difficulty_map
 ```
 
-```{r message=FALSE}
-a  <- elevation_trails %>%
-  filter(name == "Eastern Loop")
-  filter(ELEV_FT == 875)
-
-leaflet() %>%
-  addTiles() %>%
-  addPolylines(data = a)
-
-
-b <- elevation_trails %>%
-  select(name, ELEV_M)
-```
 
 ```{r message=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
