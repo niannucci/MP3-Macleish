@@ -83,28 +83,31 @@ grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
 ```{r message=FALSE}
-pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
+name_pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
 
-#Ideal -> (Yellow = entry trail)
-#Red = Western Loop (+ entry trail, and the tiny one on the top, and part of the straight-ish poplar hill road)(right now)
-#Blue = Porcupine Trail (+ the bottom part of Western Loop, and snowmobile trail on the bottom right)
-#Black = Vernal Pool Loop
-#Pink = Eastern Loop = Homestead Trail? = 5
-
-hiking_trails<- macleish_trails %>% 
+hiking_trails <- macleish_trails %>% 
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name)
-difficulty_map <- leaflet() %>%
+
+name_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = hiking_trails, color = ~pal(name))%>%
+  addPolylines(data = hiking_trails, color = ~name_pal(name))%>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
 
-#second one in pal is Western & entry trail
-#third one is Eastern & Vernal 
-difficulty_map
+name_map
 ```
 
+```{r message=FALSE}
 
+diff_pal <- colorFactor(palette = topo.colors(2), domain = grouped$difficulty_level)
+
+difficulty_map <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = grouped, color = ~diff_pal(difficulty_level)) %>%
+  addMarkers(data = st_cast(grouped, "POINT"), popup = ~name)
+
+
+```
 
 ```{r message=FALSE}
 
