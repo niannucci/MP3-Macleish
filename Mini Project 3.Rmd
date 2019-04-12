@@ -107,10 +107,15 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
+<<<<<<< HEAD
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
 ```
 
 ```{r message=FALSE}  
+=======
+  labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )
+ 
+>>>>>>> 5f6b392f5c7f69aca592695a24ec5f3a46c3adae
 elevation_graph
 ```
 
