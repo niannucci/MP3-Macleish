@@ -52,13 +52,15 @@ elevation_trails <- st_intersection(
   interior_trails,
   elevation 
 ) %>%
-  select(name, ELEV_M, ELEV_FT, SHAPE_LEN, geometry)
+  select(name, SHAPE_LEN, geometry)
 
-#Eastern --> 273 - 249 = 24 m
-#entry trail --> 252 - 246 = 6 m
-#Porcupine --> 267 - 237 = 30 m
-#Vernal --> 237 - 231 = 6 m
-#Western --> 273 - 231 = 42 m 
+elevation_trails
+
+#Eastern --> 273 - 249 = 24 m = 78.740  
+#entry trail --> 252 - 246 = 6 m = 19.685 ft
+#Porcupine --> 267 - 237 = 30 m = 98.425
+#Vernal --> 237 - 231 = 6 m = 19.685 ft
+#Western --> 273 - 231 = 42 m = 137.795
 
 # we need to manually enter those correct data regarding elevation changes to the data
 ```
@@ -67,15 +69,17 @@ elevation_trails <- st_intersection(
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name) %>%
-  summarize(elevation_ft = sum(ELEV_FT), distance = sum(SHAPE_LEN))
+  summarize(distance = sum(SHAPE_LEN))
+
+grouped$elev_change <- c("78.740", "19.685", "98.425", "19.685", "137.795")
+grouped$elev_change <- as.numeric(as.character(grouped$elev_change))
 
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
-  mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
+  mutate("Difficulty" = sqrt(elev_change * 2 * Distance_miles)) %>%
+  select(name, elev_change, Distance_miles,Difficulty)
 
 grouped$difficulty_level<-c("very streneous","moderate","very streneous","moderate","very streneous")
-
-ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
 
 ```{r message=FALSE}
@@ -122,6 +126,8 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") 
+
+ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 
 #present elevation in miles
 ```
