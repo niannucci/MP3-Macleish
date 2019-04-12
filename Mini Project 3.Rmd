@@ -72,7 +72,7 @@ grouped <- grouped %>%
   mutate("Distance_miles" = distance / 5280) %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
 
-grouped$difficulty_level<-c("very streneous", "easiest","moderate","very streneous","moderate","very streneous")
+grouped$difficulty_level<-c("very streneous","moderate","very streneous","moderate","very streneous")
 
 ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
