@@ -59,6 +59,8 @@ elevation_trails <- st_intersection(
 elevation_trails
 ```
 
+We have computed the elevation change and the distance for each trail, yet in order for the visitors to understand the difficulty of each trail more easily, we have decided to categorize those 5 trails into 3 difficulty levles: easy, moderate, and strenuous. Our initial plan was to use already existing [hiking trail difficulty rating system] (https://www.nps.gov/shen/planyourvisit/how-to-determine-hiking-difficulty.htm). However, after figuring out that all of the Macleish trails would be categorized as the easiest by Shenandoah's rating system, we kept using the equation to numerize the difficulty but arranged the way we categorize them. Instead of dividing them into easy, moderate, moderately strenuous, strenuous, and very strenuous according to the given difficulty rating, our method is dividing trails into 3 relative to each other. For instance, the difficulties of entry trail and Vernal Pool Loop are below 10, while other 3 trails are over 25, thus, they are easy trails. On the other hand, Western Loop has a high difficulty of over 45, therefore, it is a strenuous trail. 
+
 ```{r message = FALSE}
 grouped <- elevation_trails %>%
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
