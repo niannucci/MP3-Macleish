@@ -105,20 +105,6 @@ difficulty_map
 ```
 
 ```{r message=FALSE}
-a  <- elevation_trails %>%
-  filter(name == "Eastern Loop")
-  filter(ELEV_FT == 875)
-
-leaflet() %>%
-  addTiles() %>%
-  addPolylines(data = a)
-
-
-b <- elevation_trails %>%
-  select(name, ELEV_M)
-```
-
-```{r message=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
@@ -128,8 +114,6 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
   labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )
-
-#present elevation in miles
 ```
 
 ```{r message=FALSE}  
