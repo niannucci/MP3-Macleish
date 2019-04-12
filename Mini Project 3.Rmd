@@ -19,6 +19,10 @@ library(sf)
 library(ggthemes)
 library(ggrepel)
 
+trail_stream_xings <- macleish_layers %>%
+  pluck("trails") %>%
+  st_intersection(pluck(macleish_layers, "streams"))
+
 boundary <- macleish_layers %>% 
   pluck("boundary")
 macleish_trails <- macleish_layers %>%
