@@ -47,7 +47,6 @@ elevation_trails <- st_intersection(
   interior_trails,
   elevation
 ) 
-
 ```
 
 ```{r message=FALSE}
@@ -59,6 +58,8 @@ grouped <- elevation_trails %>%
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
+
+ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
 
 ```{r message=FALSE}
@@ -73,7 +74,8 @@ pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink", "Purple"), 1:6)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = interior_trails, color = ~pal(c(3, 2, 5, 1, 5, 2)))
+  addPolylines(data = interior_trails, color = ~pal(c(3, 2, 5, 1, 5, 2)))%>%
+  addMarkers(data = st_cast(trail_stream_xings, "POINT"), popup = ~name)
 
 difficulty_map
 ```
