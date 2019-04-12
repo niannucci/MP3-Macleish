@@ -5,7 +5,6 @@ output:
   html_document:
     code_folding: hide
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -19,6 +18,10 @@ library(sf)
 library(ggthemes)
 library(ggrepel)
 
+trail_stream_xings <- macleish_layers %>%
+  pluck("trails") %>%
+  st_intersection(pluck(macleish_layers, "streams"))
+
 boundary <- macleish_layers %>% 
   pluck("boundary")
 macleish_trails <- macleish_layers %>%
@@ -26,7 +29,8 @@ macleish_trails <- macleish_layers %>%
 
 interior_trails <- st_intersection(
   boundary, 
-  macleish_trails
+  macleish_trails %>%
+    filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Porcupine Trail", "Vernal Pool Loop"))
 )
 
 trails_leaflet <- leaflet() %>%
@@ -48,38 +52,79 @@ elevation_trails <- st_intersection(
   elevation
 ) 
 
+#Eastern --> 273 - 249 = 24 m
+#entry trail --> 252 - 246 = 6 m
+#Porcupine --> 267 - 237 = 30 m
+#Vernal --> 237 - 231 = 6 m
+#Western --> 273 - 231 = 42 m``` 
+
 ```
 
 ```{r message=FALSE}
 grouped <- elevation_trails %>%
-  filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) %>%
+  filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name) %>%
   summarize(elevation_ft = sum(ELEV_FT), distance = sum(SHAPE_LEN))
 
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
   mutate("Difficulty" = sqrt(elevation_ft * 2 * Distance_miles))
-grouped$difficulty_level<-c("very streneous", "easiest","moderate","very streneous","moderate","very streneous")
+
+grouped$difficulty_level<-c("very streneous","moderate","very streneous","moderate","very streneous")
+
 ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
 
 ```{r message=FALSE}
-pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink", "Purple"), 1:6)
+pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink"), 1:5)
 
 #Ideal -> (Yellow = entry trail)
 #Red = Western Loop (+ entry trail, and the tiny one on the top, and part of the straight-ish poplar hill road)(right now)
 #Blue = Porcupine Trail (+ the bottom part of Western Loop, and snowmobile trail on the bottom right)
 #Black = Vernal Pool Loop
 #Pink = Eastern Loop = Homestead Trail? = 5
-#Purple = Easy Out (where is it, I don't know which one is Easy Out..., so it's not illustrated)
+
 hiking_trails<- macleish_trails %>% 
-  filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail", "Easy Out")) 
+  filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = hiking_trails, color = "~pal(c(3, 2, 5, 1, 5, 2))")%>%
+  addPolylines(data = hiking_trails, color = ~pal(c(3, 2, 5, 1, 5, 2)))%>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
 
 difficulty_map
+```
+
+```{r message=FALSE}
+a  <- elevation_trails %>%
+  filter(name == "Western Loop") %>%
+  filter(ELEV_FT == "797")
+
+leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = a)
+
+
+
+b <- elevation_trails %>%
+  select(name, ELEV_M)
+```
+
+
+
+```{r message=FALSE}
+elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
+  geom_point(size = 5) +
+  theme_solarized() +
+  geom_smooth(color = "black", fill = "blue") +
+  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
+  xlab("Distance of Trail (in miles)") +
+  ylab("Total change in elevation (in feet)") 
+
+#present elevation in miles
+```
+
+```{r message=FALSE}  
+elevation_graph
 ```
 
 ```{r message=FALSE}
