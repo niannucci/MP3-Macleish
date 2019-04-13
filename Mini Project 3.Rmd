@@ -10,6 +10,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
 
 ```{r message = FALSE, warning=FALSE}
 library(tidyverse)
@@ -21,6 +22,8 @@ library(ggrepel)
 ```
 
 ```{r message = FALSE, warning=FALSE}
+#get trails layer from macleish data set
+
 trail_stream_xings <- macleish_layers %>%
   pluck("trails") %>%
   st_intersection(pluck(macleish_layers, "streams"))
@@ -39,8 +42,6 @@ interior_trails <- st_intersection(
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = interior_trails) 
-
-trails_leaflet
 ```
 
 ```{r message = FALSE, warning=FALSE}
@@ -50,6 +51,8 @@ elevation <- macleish_layers %>%
 ```
 
 ```{r message = FALSE, warning=FALSE}
+#combine elevation and trail layers
+
 elevation_trails <- st_intersection(
   interior_trails,
   elevation 
@@ -120,10 +123,8 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
 elevation_graph
 ```
 
+Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "streneous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficutly level each is, and then include descriptionf of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "streneous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
 
-SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
-
-
-Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
+It would not take extensive resources for Smith to impklment this sign marker at MacLeish. It will cost some money to get a sign made, but not too much because only one sign would be needed rather than new signs or markers throughout to entire Field Station. This also means that it will take a very short period of time, as once the sign is made it will just need to be put up. Because this project does not require creating new spaces or sites on the Field Station, but rather is simply a marking system, it should be a relatively smooth implementation.
 
 > Word count: `r wordcountaddin::word_count()`
