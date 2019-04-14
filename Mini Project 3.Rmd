@@ -98,9 +98,10 @@ name_map
 ```{r message = FALSE, warning=FALSE}
 diff_data <- grouped %>%
   st_cast("MULTIPOINT") %>%
-  st_cast("POINT")
+  st_cast("POINT") %>%
+  group_by(name)
 
-diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data)
+diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data$difficulty_level)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
@@ -120,9 +121,7 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
-```
-
-```{r message = FALSE, warning=FALSE}  
+ 
 elevation_graph
 ```
 
