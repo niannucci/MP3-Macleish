@@ -81,7 +81,7 @@ grouped$difficulty_level<-c("moderate","easy","moderate","easy","streneous")
 ```
 
 ```{r message = FALSE, warning=FALSE}
-name_pal <- colorFactor(palette = topo.colors(5), domain = macleish_trails$name)
+name_pal <- colorFactor(palette = rainbow(5), domain = macleish_trails$name)
 
 hiking_trails <- macleish_trails %>% 
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
@@ -101,7 +101,7 @@ diff_data <- grouped %>%
   st_cast("POINT") %>%
   group_by(name)
 
-diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data$difficulty_level)
+diff_pal <- colorFactor(palette = rainbow(3), domain = diff_data$difficulty_level)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
