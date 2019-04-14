@@ -96,16 +96,16 @@ name_map
 ```
 
 ```{r message = FALSE, warning=FALSE}
-grouped <- grouped %>%
+diff_data <- grouped %>%
   st_cast("MULTIPOINT") %>%
   st_cast("POINT")
 
-diff_pal <- colorFactor(palette = topo.colors(3), domain = grouped)
+diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data)
 
 difficulty_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = grouped, color = ~diff_pal(difficulty_level)) %>%
-  addMarkers(data = grouped, popup = ~difficulty_level)
+  addPolylines(data = diff_data, color = ~diff_pal(difficulty_level)) %>%
+  addMarkers(data = diff_data, popup = ~difficulty_level)
 
 difficulty_map
 ```
@@ -114,7 +114,7 @@ difficulty_map
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
-  stat_smooth(se=FALSE, geom="area", method = 'loess', alpha=.5, fill = "Purple") +
+  stat_smooth(se = FALSE, geom = "area", method = 'loess', alpha=.5, fill = "Purple") +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
