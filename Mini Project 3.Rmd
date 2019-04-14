@@ -96,33 +96,37 @@ name_map
 ```
 
 ```{r message = FALSE, warning=FALSE}
-diff_data <- grouped %>%
-  st_cast("MULTIPOINT") %>%
-  st_cast("POINT") %>%
-  group_by(name)
-
-diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data$difficulty_level)
-
-difficulty_map <- leaflet() %>%
-  addTiles() %>%
-  addPolylines(data = diff_data, color = ~diff_pal(difficulty_level)) %>%
-  addMarkers(data = diff_data, popup = ~difficulty_level)
-
-difficulty_map
+#diff_data <- grouped %>%
+ # st_cast("MULTIPOINT") %>%
+ # st_cast("POINT") %>%
+ # st_as_sf()
+#
+#diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data$difficulty_level)
+#
+#difficulty_map <- leaflet() %>%
+#  addTiles() %>%
+#  addPolylines(data = diff_data, color = ~diff_pal(difficulty_level))
+#
+#difficulty_map
 ```
 
 ```{r message = FALSE, warning=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   theme_solarized() +
   geom_smooth(method = 'loess') +
-  stat_smooth(se = FALSE, geom = "area", method = 'loess', alpha=.5, fill = "Purple") +
+  stat_smooth(se = FALSE, geom = "area", method = 'loess', alpha=1, fill = "Purple") +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   geom_point(size = 5) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 )
  
-elevation_graph
+elevation_graph +
+  geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
+  geom_rect(aes(xmin = 0, xmax= 2.5, ymin = 0, ymax = Inf), fill = "green", alpha = 0.08) +
+  geom_vline(xintercept = 6.2, color = "black", linetype = "dotted") +
+  geom_rect(aes(xmin =2.5, xmax= 6, ymin = 0, ymax = Inf), fill = "yellow", alpha = 0.08) +
+  geom_rect(aes(xmin = 6, xmax = 7, ymin = 0, ymax = Inf), fill = "red", alpha = 0.08)
 ```
 
 Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "streneous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficutly level each is, and then include descriptionf of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "streneous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
