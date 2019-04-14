@@ -124,10 +124,10 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
  
 elevation_graph +
   geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
-  geom_rect(aes(xmin = 0, xmax= 2.5, ymin = 0, ymax = Inf), fill = "green", alpha = 0.08) +
+  geom_rect(aes(xmin = 0, xmax= 2.5, ymin = 0, ymax = Inf), fill = "green", alpha = 0.06) +
   geom_vline(xintercept = 6, color = "black", linetype = "dotted") +
-  geom_rect(aes(xmin =2.5, xmax= 6, ymin = 0, ymax = Inf), fill = "yellow", alpha = 0.08) +
-  geom_rect(aes(xmin = 6, xmax = 7, ymin = 0, ymax = Inf), fill = "red", alpha = 0.08) +
+  geom_rect(aes(xmin =2.5, xmax= 6, ymin = 0, ymax = Inf), fill = "yellow", alpha = 0.06) +
+  geom_rect(aes(xmin = 6, xmax = 7, ymin = 0, ymax = Inf), fill = "red", alpha = 0.06) +
   annotate("label", x = 1, y = 120, label = "EASY", type = "Bold", size = 5, color = "Dark green") +
   annotate("label", x = 4.3, y = 120, label = "MODERATE", type = "Bold", size = 5, color = "darkgoldenrod1") +
   annotate("label", x = 6.5, y = 120, label = "STRENUOUS", type = "Bold", size = 5, color = "Dark red")
