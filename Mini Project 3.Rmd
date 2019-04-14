@@ -125,11 +125,13 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   xlab("Distance of Trail (in miles)") +
   ylab("Total change in elevation (in feet)") +
   labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 ) +
-  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center")
+  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
+  annotate("label", x = 1, y = 120, label = "EASY", type = "Bold", size = 5, color = "Dark green") +
+  annotate("label", x = 4.3, y = 120, label = "MODERATE", type = "Bold", size = 5, color = "darkgoldenrod1") +
+  annotate("label", x = 6.5, y = 120, label = "STRENUOUS", type = "Bold", size = 5, color = "Dark red")
  
 elevation_graph 
 
-#can you see now?
 ```
 
 Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
