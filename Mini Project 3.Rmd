@@ -8,6 +8,9 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+The Macleish Field station is situated in the  hills of West Whately in the City of Northampton, Massachusetts. In 2013, Smith college donated a conservation restriction on 260 acres to Kestrel, in order to allow students to conduct  environmental research, do outdoor education and hike in the woods while also protecting the wildlife habitat for the future. In order to make it easier and more convenient for students to explore the Macleish woods,  student volunteers and a team of interns from the Botanic Gardens working with Reid Bertone-Johnson, landscape studies lecturer and field station manager, and Scott Johnson, outdoor adventure coordinator, began constructing nature trails on the property this summer. By the end of the summer, they successfully, cleared, raked and hacked their way through enough tree roots to complete nearly a mile of walkable trails for the proposed five-mile trail network.
+The project began in 2008 when landscape studies design studio students worked with Bertone-Johnson to design an interpretive trail network that highlights the history and ecology of the site. In our project we are looking through those designed trails and trying to compute and rank their difficulty levels to give a clear idea of how difficult each trail is for visitors of Macleish.
+https://www.smith.edu/insight/stories/macleish_sidebar.php
 
 
 ```{r message=FALSE}
@@ -52,7 +55,6 @@ elevation_trails <- st_intersection(
   elevation
 ) 
 
-<<<<<<< HEAD
 #Eastern --> 273 - 249 = 24 m
 #entry trail --> 252 - 246 = 6 m
 #Porcupine --> 267 - 237 = 30 m
@@ -60,11 +62,10 @@ elevation_trails <- st_intersection(
 #Western --> 273 - 231 = 42 m``` 
 
 ```
-=======
-```
+
 
 We have computed the elevation change and the distance for each trail, yet in order for the visitors to understand the difficulty of each trail more easily, we have decided to categorize those 5 trails into 3 difficulty levels: easy, moderate, and strenuous. Our initial plan was to use already existing [hiking trail difficulty rating system] (https://www.nps.gov/shen/planyourvisit/how-to-determine-hiking-difficulty.htm). However, after figuring out that all of the Macleish trails would be categorized as the easiest by Shenandoah's rating system, we kept using the equation to numerize the difficulty but arranged the way we categorize them. Instead of dividing them into easy, moderate, moderately strenuous, strenuous, and very strenuous according to the given difficulty rating, our method is dividing trails into 3 relative to each other. For instance, the difficulties of entry trail and Vernal Pool Loop are below 10, while other 3 trails are over 25, thus, they are easy trails. On the other hand, Western Loop has a high difficulty of over 45, therefore, it is a strenuous trail. 
->>>>>>> fd13493c4aee0e08cd088ff5db672cc835a2ad64
+
 
 ```{r message=FALSE}
 grouped <- elevation_trails %>%
@@ -81,13 +82,9 @@ grouped$difficulty_level<-c("very streneous","moderate","very streneous","modera
 ggplot(data= grouped, aes(y = elevation_ft, x = Distance_miles)) +geom_line() + geom_area(color="black", fill="gray" )+labs(title= "Elevation profiles at MacLeish",face="bold", size=25 )+labs(y= "feet above sea level")+labs(x="Miles")+ geom_text(aes(label = name), size = 3)
 ```
 
-<<<<<<< HEAD
 ```{r message=FALSE}
 pal <- colorNumeric(c("Black", "Red", "Blue", "Yellow", "Pink"), 1:5)
-=======
-```{r message = FALSE, warning=FALSE}
 name_pal <- colorFactor(palette = rainbow(5), domain = macleish_trails$name)
->>>>>>> fd13493c4aee0e08cd088ff5db672cc835a2ad64
 
 #Ideal -> (Yellow = entry trail)
 #Red = Western Loop (+ entry trail, and the tiny one on the top, and part of the straight-ish poplar hill road)(right now)
@@ -102,11 +99,13 @@ difficulty_map <- leaflet() %>%
   addPolylines(data = grouped, color = ~pal((difficulty_level)))%>%
     addLegend(pal = pal, values = ~difficulty_level, opacity = 1)%>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
+```
 
+```{r}
 difficulty_map
 ```
 
-<<<<<<< HEAD
+
 ```{r message=FALSE}
 a  <- elevation_trails %>%
   filter(name == "Western Loop") %>%
@@ -120,7 +119,8 @@ leaflet() %>%
 
 b <- elevation_trails %>%
   select(name, ELEV_M)
-=======
+```
+
 ```{r message = FALSE, warning=FALSE}
 #diff_data <- grouped %>%
  # st_cast("MULTIPOINT") %>%
@@ -134,8 +134,6 @@ b <- elevation_trails %>%
 #  addPolylines(data = diff_data, color = ~diff_pal(difficulty_level))
 #
 #difficulty_map
-
->>>>>>> fd13493c4aee0e08cd088ff5db672cc835a2ad64
 ```
 
 
@@ -144,7 +142,6 @@ b <- elevation_trails %>%
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
   geom_point(size = 5) +
   theme_solarized() +
-<<<<<<< HEAD
   geom_smooth(color = "black", fill = "blue") +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   xlab("Distance of Trail (in miles)") +
@@ -169,7 +166,6 @@ leaflet() %>%
 
 ```{r message=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
-=======
   geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
   geom_rect(aes(xmin = 0, xmax= 2.5, ymin = 0, ymax = Inf), fill = "green", alpha = 0.08) +
   geom_vline(xintercept = 6.2, color = "black", linetype = "dotted") +
@@ -177,14 +173,18 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elevation_ft)) +
   geom_rect(aes(xmin = 6, xmax = 7, ymin = 0, ymax = Inf), fill = "red", alpha = 0.08) +
   geom_smooth(method = 'loess') +
   stat_smooth(se = FALSE, geom = "area", method = 'loess', alpha=1, fill = "Purple") +
->>>>>>> fd13493c4aee0e08cd088ff5db672cc835a2ad64
   geom_point(size = 5) +
   theme_solarized() +
   geom_smooth(color = "black", fill = "blue") +
   geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
   xlab("Distance of Trail (in miles)") +
-<<<<<<< HEAD
-  ylab("Total change in elevation (in feet)") 
+  ylab("Total change in elevation (in feet)") +
+  labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 ) +
+  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
+  annotate("label", x = 1, y = 120, label = "EASY", type = "Bold", size = 5, color = "Dark green") +
+  annotate("label", x = 4.3, y = 120, label = "MODERATE", type = "Bold", size = 5, color = "darkgoldenrod1") +
+  annotate("label", x = 6.5, y = 120, label = "STRENUOUS", type = "Bold", size = 5, color = "Dark red")
+
 ```
 
 ```{r message=FALSE}  
@@ -201,21 +201,12 @@ SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
 
 
 Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
-=======
-  ylab("Total change in elevation (in feet)") +
-  labs(title = "Profiles of Trails in Macleish",face = "bold", size = 25 ) +
-  geom_label_repel(aes(label = name), point.padding = 0.5, hjust = "middle", vjust = "center") +
-  annotate("label", x = 1, y = 120, label = "EASY", type = "Bold", size = 5, color = "Dark green") +
-  annotate("label", x = 4.3, y = 120, label = "MODERATE", type = "Bold", size = 5, color = "darkgoldenrod1") +
-  annotate("label", x = 6.5, y = 120, label = "STRENUOUS", type = "Bold", size = 5, color = "Dark red")
- 
+```{r}
 elevation_graph 
-
 ```
 
 Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
 
 It would not take extensive resources for Smith to implement this sign marker at MacLeish. It will cost some money to get a sign made, but not too much because only one sign would be needed rather than new signs or markers throughout to entire Field Station. This also means that it will take a very short period of time, as once the sign is made it will just need to be put up. Because this project does not require creating new spaces or sites on the Field Station, but rather is simply a marking system, it should be a relatively smooth implementation.
->>>>>>> fd13493c4aee0e08cd088ff5db672cc835a2ad64
 
 > Word count: `r wordcountaddin::word_count()`
