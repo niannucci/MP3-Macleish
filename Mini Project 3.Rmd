@@ -76,8 +76,8 @@ grouped$elev_change <- as.numeric(as.character(grouped$elev_change))
 
 grouped <- grouped %>% 
   mutate("Distance_miles" = distance / 5280) %>%
-  select(name, elev_change, Distance_miles, Difficulty)
-  mutate("Difficulty" = sqrt(elev_change * 2 * Distance_miles))
+  mutate("Difficulty" = sqrt(elev_change * 2 * Distance_miles)) %>%
+  select(name, elev_change, Distance_miles, Difficulty) 
 
 grouped$difficulty_level<-c("moderate", "easy", "moderate", "easy", "streneous")
 ```
@@ -91,8 +91,8 @@ hiking_trails<- macleish_trails %>%
 
 name_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = hiking_trails, color = ~name_pal((name)))%>%
-    addLegend(pal = pal, values = ~difficulty_level, opacity = 1)%>%
+  addPolylines(data = hiking_trails, color = ~name_pal((name))) %>%
+    addLegend(pal = pal, values = ~difficulty_level, opacity = 1) %>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
 ```
 
