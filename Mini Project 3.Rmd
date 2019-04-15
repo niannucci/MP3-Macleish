@@ -8,6 +8,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 Our goal is to determine the difficulty of each trail at MacLeish based on its length and elevation, and to be able to classify trails based on difficulty so that visitors can better decide which trail they would like to take. ^[https://github.com/niannucci/MP3-Macleish]
 
 The Macleish Field station is situated in the  hills of West Whately in the City of Northampton, Massachusetts. In 2013, Smith college donated a conservation restriction on 260 acres to Kestrel, in order to allow students to conduct  environmental research, do outdoor education and hike in the woods while also protecting the wildlife habitat for the future. In order to make it easier and more convenient for students to explore the Macleish woods, student volunteers and a team of interns from the Botanic Gardens working with Reid Bertone-Johnson, landscape studies lecturer and field station manager, and Scott Johnson, outdoor adventure coordinator, began constructing nature trails on the property this summer. By the end of the summer, they successfully, cleared, raked and hacked their way through enough tree roots to complete nearly a mile of walkable trails for the proposed five-mile trail network.
@@ -43,8 +44,6 @@ interior_trails <- st_intersection(
 trails_leaflet <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = interior_trails) 
-
-trails_leaflet
 ```
 
 ```{r message = FALSE}
@@ -92,7 +91,6 @@ hiking_trails<- macleish_trails %>%
 name_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = hiking_trails, color = ~name_pal((name))) %>%
-    addLegend(pal = pal, values = ~difficulty_level, opacity = 1) %>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
 ```
 
@@ -119,11 +117,10 @@ name_map
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
   geom_rect(aes(xmin = 0, xmax= 2.5, ymin = 0, ymax = Inf), fill = "green", alpha = 0.08) +
-  geom_vline(xintercept = 6.2, color = "black", linetype = "dotted") +
+  geom_vline(xintercept = 6, color = "black", linetype = "dotted") +
   geom_rect(aes(xmin =2.5, xmax= 6, ymin = 0, ymax = Inf), fill = "yellow", alpha = 0.08) +
   geom_rect(aes(xmin = 6, xmax = 7, ymin = 0, ymax = Inf), fill = "red", alpha = 0.08) +
   geom_smooth(method = 'loess') +
-  stat_smooth(se = FALSE, geom = "area", method = 'loess', alpha=1, fill = "Purple") +
   geom_point(size = 5) +
   theme_solarized() +
   geom_smooth(color = "black", fill = "blue") +
