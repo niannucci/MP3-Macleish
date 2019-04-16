@@ -23,6 +23,7 @@ library(leaflet)
 library(sf)
 library(ggthemes)
 library(ggrepel)
+library(rgdal)
 
 #get trails layer from macleish data set
 
@@ -81,37 +82,30 @@ grouped <- grouped %>%
 grouped$difficulty_level<-c("moderate", "easy", "moderate", "easy", "streneous")
 ```
 
+
 ```{r message = FALSE, warning=FALSE}
 name_pal <- colorFactor(palette = rainbow(5), domain = macleish_trails$name)
 
 hiking_trails<- macleish_trails %>% 
   filter(name %in% c("entry trail", "Western Loop", "Eastern Loop", "Vernal Pool Loop", "Porcupine Trail")) %>%
   group_by(name)
+  interior_trails$difficulty_level<- c("moderate","streneous","easy","moderate","streneous","streneous","easy","moderate")
 
 name_map <- leaflet() %>%
   addTiles() %>%
   addPolylines(data = hiking_trails, color = ~name_pal((name))) %>%
-  addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~name)
+  addLegend("bottomright", pal = name_pal, values = hiking_trails$name,
+   title = "trail names",
+  labels ="tail names",
+   opacity = 1)%>%
+  addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~difficulty_level)
 ```
 
 ```{r}
 name_map
 ```
 
-```{r message = FALSE, warning=FALSE}
-#diff_data <- grouped %>%
- # st_cast("MULTIPOINT") %>%
- # st_cast("POINT") %>%
- # st_as_sf()
-#
-#diff_pal <- colorFactor(palette = topo.colors(3), domain = diff_data$difficulty_level)
-#
-#difficulty_map <- leaflet() %>%
-#  addTiles() %>%
-#  addPolylines(data = diff_data, color = ~diff_pal(difficulty_level))
-#
-#difficulty_map
-```
+
 
 ```{r message=FALSE, warning=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
