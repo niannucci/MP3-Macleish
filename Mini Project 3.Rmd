@@ -20,10 +20,6 @@ The Macleish Field station is situated in the  hills of West Whately in the City
 The problem we are facing is that the trails currently are not classified in term of difficulty and visitors do not know  what to expect when they choose a trail. In our project we are looking through the designed trails and trying to compute and rank their difficulty levels to give a clear idea of how difficult each trail is for visitors of [Macleish](https://www.smith.edu/insight/stories/macleish_sidebar.php). ^[https://github.com/niannucci/MP3-Macleish]
 
 
-The project began in 2008 when landscape studies design studio students worked with Bertone-Johnson to design an interpretive trail network that highlights the history and ecology of the site.The problem we are facing is that the trails currently are not classified in term of difficulty and visitors do not know  what to expect when they choose a trail. In our project we are looking through the designed trails and trying to compute and rank their difficulty levels to give a clear idea of how difficult each trail is for visitors of [Macleish](https://www.smith.edu/insight/stories/macleish_sidebar.php). ^[https://github.com/niannucci/MP3-Macleish]
-The following map shows the location, name and difficulty level of each trail.
-
-
 ```{r message = FALSE, warning=FALSE}
 library(tidyverse)
 library(macleish)
@@ -150,14 +146,12 @@ SQRT(Elevation Gain(in feet) x 2 x distance (in miles))
 elevation_graph
 ```
 
-Based on our findings, we recommend that Smith College adds new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
-
 
 Each trail on the leaflet mpa is assigned to a color, and the difficulty level can be seen by clicking the marker.
 
 Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
 
 
-It would not take extensive resources for Smith to implement this sign marker at MacLeish. It will cost some money to get a sign made, but not too much because only one sign would be needed rather than new signs or markers throughout to entire Field Station.(if each sign costs between $10-$20 and we have a sign per trail the total would be under$100) This also means that it will take a very short period of time (around 2 days if there are enough student volunteers), as once the sign is made it will just need to be put up. Because this project does not require creating new spaces or sites on the Field Station, but rather is simply a mark. There s a limited number of signs so there won't be any harm on the environment. We don't see any major roadblocks to the implementation of our solutions.
+It would not take extensive resources for Smith to implement this sign marker at MacLeish. It will cost some money to get a sign made, but not too much because only one sign would be needed rather than new signs or markers throughout to entire Field Station.(if each sign costs between $10-$20 and we have a sign per trail the total would be under$100) This also means that it will take a very short period of time (around 2 days if there are enough student volunteers), as once the sign is made it will just need to be put up. Because this project does not require creating new spaces or sites on the Field Station, but rather is simply a mark. There is a limited number of signs so there won't be any harm on the environment. We don't see any major roadblocks to the implementation of our solutions.
 
 > Word count: `r wordcountaddin::word_count()`
