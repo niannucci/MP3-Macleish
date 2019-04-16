@@ -82,6 +82,7 @@ grouped <- grouped %>%
 grouped$difficulty_level<-c("moderate", "easy", "moderate", "easy", "streneous")
 ```
 
+
 ```{r message = FALSE, warning=FALSE}
 name_pal <- colorFactor(palette = rainbow(5), domain = macleish_trails$name)
 
@@ -96,7 +97,11 @@ name_map <- leaflet() %>%
   addLegend("bottomright", pal = name_pal, values = hiking_trails$name,
    title = "trail names",
   labels ="tail names",
+<<<<<<< HEAD
    opacity = 1) %>%
+=======
+   opacity = 1)%>%
+>>>>>>> 745b97a85a94b3acdbdbbe9f1f04909b974d09d8
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~difficulty_level)
 ```
 
@@ -104,6 +109,11 @@ name_map <- leaflet() %>%
 name_map
 ```
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 745b97a85a94b3acdbdbbe9f1f04909b974d09d8
 ```{r message=FALSE, warning=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
