@@ -29,9 +29,11 @@ library(sf)
 library(ggthemes)
 library(ggrepel)
 library(rgdal)
+```
 
-#get trails layer from macleish data set
 
+get trails layer from macleish data set
+```{r message = FALSE, warning=FALSE}
 trail_stream_xings <- macleish_layers %>%
   pluck("trails") %>%
   st_intersection(pluck(macleish_layers, "streams"))
@@ -58,16 +60,14 @@ elevation <- macleish_layers %>%
   st_transform(4326)
 ```
 
+combine elevation and trail layers
 ```{r message = FALSE, warning=FALSE}
-#combine elevation and trail layers
-
 elevation_trails <- st_intersection(
   interior_trails,
   elevation
 ) %>%
   select(name, SHAPE_LEN, geometry)
 ```
-
 
 
 ```{r message = FALSE, warning=FALSE}
@@ -87,7 +87,7 @@ grouped <- grouped %>%
 grouped$difficulty_level<-c("moderate", "easy", "moderate", "easy", "streneous")
 ```
 
-
+code for name_map
 ```{r message = FALSE, warning=FALSE}
 name_pal <- colorFactor(palette = rainbow(5), domain = macleish_trails$name)
 
@@ -102,12 +102,20 @@ name_map <- leaflet() %>%
   addLegend("bottomright", pal = name_pal, values = hiking_trails$name,
    title = "trail names",
   labels ="tail names",
-   opacity = 1)%>%
+   opacity = 1) %>%
   addMarkers(data = st_cast(interior_trails, "POINT"), popup = ~difficulty_level)
 ```
 
+<<<<<<< HEAD
 
 
+=======
+```{r}
+name_map
+```
+
+code for creating elevation_graph
+>>>>>>> 4583c886961c8d982a309f19f68d7e42dd6fc7a1
 ```{r message=FALSE, warning=FALSE}
 elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   geom_vline(xintercept = 2.5, color = "black", linetype = "dotted") +
@@ -127,7 +135,6 @@ elevation_graph <- ggplot(grouped, aes(x = Distance_miles, y = elev_change)) +
   annotate("label", x = 1, y = 120, label = "EASY", size = 5, color = "Dark green") +
   annotate("label", x = 4.3, y = 120, label = "MODERATE", size = 5, color = "darkgoldenrod1") +
   annotate("label", x = 6.5, y = 120, label = "STRENUOUS", size = 5, color = "Dark red")
-
 ```
 
 ```{r}
@@ -147,6 +154,12 @@ elevation_graph
 
 Based on our findings, we recommend that Smith College adds new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
 
+<<<<<<< HEAD
+=======
+Each trail on the leaflet mpa is assigned to a color, and the difficulty level can be seen by clicking the marker.
+
+Based on our findings, we recommend that Smith College add new markers to each of their trails to give visitors more information about the difficulty level of each trail so that they can better decide which to take. Each trail should be labeled "easy", "moderate", or "strenuous" based on length and changes in elevation. MacLeish Field Station should add a sign outlining each trail and saying which difficulty level each is, and then include descriptions of each difficulty level and what each means. "Easy" means the trail is suggested for those who prefer a leisurely walk, children, or people with mobility issues. The trails marked "moderate" are suggested to beginner hikers or people looking for a bit of casual exercise. The "strenuous" trails are suggested for experienced hikers or people looking for a challenge or an intense workout. This sign and details would be very helpful to visitors as they would be more satisfied with their time at MacLeish.
+>>>>>>> 4583c886961c8d982a309f19f68d7e42dd6fc7a1
 
 It would not take extensive resources for Smith to implement this sign marker at MacLeish. It will cost some money to get a sign made, but not too much because only one sign would be needed rather than new signs or markers throughout to entire Field Station.(if each sign costs between $10-$20 and we have a sign per trail the total would be under$100) This also means that it will take a very short period of time (around 2 days if there are enough student volunteers), as once the sign is made it will just need to be put up. Because this project does not require creating new spaces or sites on the Field Station, but rather is simply a mark. There s a limited number of signs so there won't be any harm on the environment. We don't see any major roadblocks to the implementation of our solutions.
 
